@@ -1,0 +1,21 @@
+# Dipendenze
+node_modules/
+
+# Segreti / credenziali
+.env
+.env.*
+!.env.example
+**/data/.auth/
+
+# Dati generati/scaricati dalla pipeline (si rigenerano eseguendo lo scraper)
+/scraper/data/
+
+# Checkout esterno di OpenDAoC-Core (clonarlo a parte, non fa parte del progetto)
+/opendaocPatches/src/
+
+# Dump del DB in input (grossi, non vanno versionati)
+/sql/*.sql
+
+# Varie OS/editor
+.DS_Store
+Thumbs.db

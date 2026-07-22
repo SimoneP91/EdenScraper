@@ -1,0 +1,685 @@
+{
+  "generatedAt": "2026-07-20T20:40:20.997Z",
+  "regions": [
+    {
+      "regionId": 1,
+      "name": "Region001",
+      "expansion": 0,
+      "zones": [
+        "Camelot Hills",
+        "Salisbury Plains",
+        "Black Mtns. South",
+        "Black Mtns. North",
+        "Dartmoor",
+        "Cornwall",
+        "Llyn Barfog",
+        "Campacorentin Forest",
+        "Avalon Marsh",
+        "Lyonesse",
+        "Forest Sauvage",
+        "Snowdonia",
+        "Pennine Mountains",
+        "Hadrian's Wall"
+      ]
+    },
+    {
+      "regionId": 2,
+      "name": "Region002",
+      "expansion": 0,
+      "zones": [
+        "Caerwent",
+        "Old Sarum",
+        "Rilan",
+        "Dalton",
+        "Brisworthy",
+        "Aylesbury",
+        "Chiltern",
+        "Sherborne",
+        "Stoneleigh"
+      ]
+    },
+    {
+      "regionId": 10,
+      "name": "Region010",
+      "expansion": 0,
+      "zones": [
+        "City of Camelot"
+      ]
+    },
+    {
+      "regionId": 20,
+      "name": "Region020",
+      "expansion": 0,
+      "zones": [
+        "Stonehenge Barrows"
+      ]
+    },
+    {
+      "regionId": 21,
+      "name": "Region021",
+      "expansion": 0,
+      "zones": [
+        "Tomb of Mithra"
+      ]
+    },
+    {
+      "regionId": 22,
+      "name": "Region022",
+      "expansion": 0,
+      "zones": [
+        "Keltoi Fogou"
+      ]
+    },
+    {
+      "regionId": 23,
+      "name": "Region023",
+      "expansion": 0,
+      "zones": [
+        "Catacombs of Cardova"
+      ]
+    },
+    {
+      "regionId": 24,
+      "name": "Region024",
+      "expansion": 0,
+      "zones": [
+        "Tepok's Mine"
+      ]
+    },
+    {
+      "regionId": 27,
+      "name": "Region027",
+      "expansion": 0,
+      "zones": [
+        "Constantine's Sound",
+        "Grenlock's Sound",
+        "Lamfhota's Sound"
+      ]
+    },
+    {
+      "regionId": 50,
+      "name": "Region050",
+      "expansion": 1,
+      "zones": [
+        "Avalon City"
+      ]
+    },
+    {
+      "regionId": 51,
+      "name": "Region051",
+      "expansion": 1,
+      "zones": [
+        "Isle of Glass",
+        "Avalon Isle",
+        "Dales of Devwy",
+        "Caldey",
+        "Gwyddneau",
+        "Aldland",
+        "Inishail Island"
+      ]
+    },
+    {
+      "regionId": 60,
+      "name": "Region060",
+      "expansion": 1,
+      "zones": [
+        "Caer Sidi"
+      ]
+    },
+    {
+      "regionId": 61,
+      "name": "Region061",
+      "expansion": 1,
+      "zones": [
+        "Krondon"
+      ]
+    },
+    {
+      "regionId": 62,
+      "name": "Region062",
+      "expansion": 1,
+      "zones": [
+        "Crystal Cave"
+      ]
+    },
+    {
+      "regionId": 100,
+      "name": "Region100",
+      "expansion": 0,
+      "zones": [
+        "Vale of Mularn",
+        "East Svealand",
+        "West Svealand",
+        "Gotar",
+        "Muspelheim",
+        "Myrkwood Forest",
+        "Skona Ravine",
+        "Vanern Swamp",
+        "Raumarik",
+        "Uppland",
+        "Yggdra Forest",
+        "Jamtland Mountains",
+        "Odin's Gate",
+        "Malmohus"
+      ]
+    },
+    {
+      "regionId": 101,
+      "name": "Region101",
+      "expansion": 0,
+      "zones": [
+        "Jordheim"
+      ]
+    },
+    {
+      "regionId": 102,
+      "name": "Region102",
+      "expansion": 0,
+      "zones": [
+        "Erikstaad",
+        "Arothi",
+        "Carlingford",
+        "Wyndham",
+        "Frisia",
+        "Kaupang",
+        "Holmestrand",
+        "Nittedal",
+        "Stavgaard"
+      ]
+    },
+    {
+      "regionId": 125,
+      "name": "Region125",
+      "expansion": 0,
+      "zones": [
+        "Spindelhalla"
+      ]
+    },
+    {
+      "regionId": 126,
+      "name": "Region126",
+      "expansion": 0,
+      "zones": [
+        "Vendo Caverns"
+      ]
+    },
+    {
+      "regionId": 127,
+      "name": "Region127",
+      "expansion": 0,
+      "zones": [
+        "Varulvhamn"
+      ]
+    },
+    {
+      "regionId": 128,
+      "name": "Region128",
+      "expansion": 0,
+      "zones": [
+        "Cursed Tomb"
+      ]
+    },
+    {
+      "regionId": 129,
+      "name": "Region129",
+      "expansion": 0,
+      "zones": [
+        "Nisse's Lair"
+      ]
+    },
+    {
+      "regionId": 150,
+      "name": "Region150",
+      "expansion": 1,
+      "zones": [
+        "Trollheim"
+      ]
+    },
+    {
+      "regionId": 151,
+      "name": "Region151",
+      "expansion": 1,
+      "zones": [
+        "Aegir's Landing",
+        "Gripklosa Mountains",
+        "Delling Crater",
+        "Faraheim",
+        "Munin Sound",
+        "Iarnwood",
+        "Modernagrav"
+      ]
+    },
+    {
+      "regionId": 160,
+      "name": "Region160",
+      "expansion": 1,
+      "zones": [
+        "Tuscaran Glacier"
+      ]
+    },
+    {
+      "regionId": 161,
+      "name": "Region161",
+      "expansion": 1,
+      "zones": [
+        "Iarnvidiur's Lair"
+      ]
+    },
+    {
+      "regionId": 163,
+      "name": "Region163",
+      "expansion": 0,
+      "zones": [
+        "Agramon",
+        "Irish Sea",
+        "Unamed Sea 2",
+        "Odin's Gate",
+        "Jamtland Mountains",
+        "Yggdra Forest",
+        "Uppland",
+        "Emain Macha",
+        "Breifine",
+        "Cruachan Gorge",
+        "Mount Collory",
+        "Snowdonia",
+        "Forest Sauvage",
+        "Pennine Mountains",
+        "Hadrian's Wall"
+      ]
+    },
+    {
+      "regionId": 165,
+      "name": "Region165",
+      "expansion": 0,
+      "zones": [
+        "Cathal Valley"
+      ]
+    },
+    {
+      "regionId": 180,
+      "name": "Region180",
+      "expansion": 1,
+      "zones": [
+        "Fomor"
+      ]
+    },
+    {
+      "regionId": 181,
+      "name": "Region181",
+      "expansion": 1,
+      "zones": [
+        "Domnann",
+        "Caillte Garran",
+        "Vale of Balor",
+        "Cothrom Gorge",
+        "World's End",
+        "Vigilant Rock",
+        "Allta Fearann"
+      ]
+    },
+    {
+      "regionId": 190,
+      "name": "Region190",
+      "expansion": 1,
+      "zones": [
+        "Tur Suil"
+      ]
+    },
+    {
+      "regionId": 191,
+      "name": "Region191",
+      "expansion": 1,
+      "zones": [
+        "Galladoria"
+      ]
+    },
+    {
+      "regionId": 192,
+      "name": "Region192",
+      "expansion": 1,
+      "zones": [
+        "Le Sanctuaire Du Haut Consule"
+      ]
+    },
+    {
+      "regionId": 193,
+      "name": "Region193",
+      "expansion": 1,
+      "zones": [
+        "Le Sanctuaire Du Haut Consule"
+      ]
+    },
+    {
+      "regionId": 194,
+      "name": "Region194",
+      "expansion": 1,
+      "zones": [
+        "Le Sanctuaire Du Haut Consule"
+      ]
+    },
+    {
+      "regionId": 200,
+      "name": "Region200",
+      "expansion": 0,
+      "zones": [
+        "Lough Derg",
+        "Silvermine Mts.",
+        "Shannon Estuary",
+        "Cliffs of Moher",
+        "Lough Gur",
+        "Bog of Cullen",
+        "Valley of Bri Leith",
+        "Connacht",
+        "Cursed Forest",
+        "Mount Collory",
+        "Cruachan Gorge",
+        "Breifine",
+        "Emain Macha",
+        "Sheeroe Hills"
+      ]
+    },
+    {
+      "regionId": 201,
+      "name": "Region201",
+      "expansion": 0,
+      "zones": [
+        "Tir na Nog"
+      ]
+    },
+    {
+      "regionId": 202,
+      "name": "Region202",
+      "expansion": 0,
+      "zones": [
+        "Meath",
+        "Dunshire",
+        "Torrylin",
+        "Kilcullen",
+        "Saeranthal",
+        "Aberillan",
+        "Tullamore",
+        "Moycullen",
+        "Broughshane"
+      ]
+    },
+    {
+      "regionId": 220,
+      "name": "Region220",
+      "expansion": 0,
+      "zones": [
+        "Coruscating Mine"
+      ]
+    },
+    {
+      "regionId": 221,
+      "name": "Region221",
+      "expansion": 0,
+      "zones": [
+        "Muire Tomb"
+      ]
+    },
+    {
+      "regionId": 222,
+      "name": "Region222",
+      "expansion": 0,
+      "zones": [
+        "Spraggon Den"
+      ]
+    },
+    {
+      "regionId": 223,
+      "name": "Region223",
+      "expansion": 0,
+      "zones": [
+        "Koalinth Caverns"
+      ]
+    },
+    {
+      "regionId": 224,
+      "name": "Region224",
+      "expansion": 0,
+      "zones": [
+        "Treibh Caillte"
+      ]
+    },
+    {
+      "regionId": 231,
+      "name": "Region231",
+      "expansion": 0,
+      "zones": [
+        "ArtOutside"
+      ]
+    },
+    {
+      "regionId": 232,
+      "name": "Region232",
+      "expansion": 0,
+      "zones": [
+        "ArtInside"
+      ]
+    },
+    {
+      "regionId": 233,
+      "name": "Region233",
+      "expansion": 0,
+      "zones": []
+    },
+    {
+      "regionId": 234,
+      "name": "Region234",
+      "expansion": 0,
+      "zones": [
+        "The Proving Grounds"
+      ]
+    },
+    {
+      "regionId": 235,
+      "name": "Region235",
+      "expansion": 0,
+      "zones": [
+        "The Lions Den"
+      ]
+    },
+    {
+      "regionId": 236,
+      "name": "Region236",
+      "expansion": 0,
+      "zones": [
+        "The Hills of Claret"
+      ]
+    },
+    {
+      "regionId": 237,
+      "name": "Region237",
+      "expansion": 0,
+      "zones": [
+        "Killaloe"
+      ]
+    },
+    {
+      "regionId": 238,
+      "name": "Region238",
+      "expansion": 0,
+      "zones": [
+        "Thidranki"
+      ]
+    },
+    {
+      "regionId": 239,
+      "name": "Region239",
+      "expansion": 0,
+      "zones": [
+        "Braemar"
+      ]
+    },
+    {
+      "regionId": 240,
+      "name": "Region240",
+      "expansion": 0,
+      "zones": [
+        "Wilton"
+      ]
+    },
+    {
+      "regionId": 241,
+      "name": "Region241",
+      "expansion": 0,
+      "zones": [
+        "Molvik"
+      ]
+    },
+    {
+      "regionId": 242,
+      "name": "Region242",
+      "expansion": 0,
+      "zones": [
+        "TestBG",
+        "Leirvik"
+      ]
+    },
+    {
+      "regionId": 244,
+      "name": "Region244",
+      "expansion": 0,
+      "zones": [
+        "Passage of Conflict"
+      ]
+    },
+    {
+      "regionId": 245,
+      "name": "Region245",
+      "expansion": 0,
+      "zones": [
+        "Hall of the Corrupt"
+      ]
+    },
+    {
+      "regionId": 246,
+      "name": "Region246",
+      "expansion": 0,
+      "zones": [
+        "Dodens Gruva"
+      ]
+    },
+    {
+      "regionId": 247,
+      "name": "Region247",
+      "expansion": 0,
+      "zones": [
+        "Marfach Caverns"
+      ]
+    },
+    {
+      "regionId": 248,
+      "name": "Region248",
+      "expansion": 0,
+      "zones": [
+        "Summoner's Hall"
+      ]
+    },
+    {
+      "regionId": 249,
+      "name": "Region249",
+      "expansion": 0,
+      "zones": [
+        "Darkness Falls"
+      ]
+    },
+    {
+      "regionId": 250,
+      "name": "Region250",
+      "expansion": 0,
+      "zones": [
+        "Caledon"
+      ]
+    },
+    {
+      "regionId": 251,
+      "name": "Region251",
+      "expansion": 0,
+      "zones": [
+        "Murdaigean"
+      ]
+    },
+    {
+      "regionId": 252,
+      "name": "Region252",
+      "expansion": 0,
+      "zones": [
+        "Thidranki"
+      ]
+    },
+    {
+      "regionId": 253,
+      "name": "Region253",
+      "expansion": 0,
+      "zones": [
+        "Abermenai"
+      ]
+    },
+    {
+      "regionId": 276,
+      "name": "Region276",
+      "expansion": 0,
+      "zones": [
+        "Marfach Cavern"
+      ]
+    },
+    {
+      "regionId": 277,
+      "name": "Region277",
+      "expansion": 0,
+      "zones": [
+        "Hall of the Corrupt"
+      ]
+    },
+    {
+      "regionId": 325,
+      "name": "Region325",
+      "expansion": 0,
+      "zones": [
+        "Hib 30 Dungeon"
+      ]
+    },
+    {
+      "regionId": 326,
+      "name": "Region326",
+      "expansion": 0,
+      "zones": [
+        "Alb 30 Dungeon"
+      ]
+    },
+    {
+      "regionId": 328,
+      "name": "Region328",
+      "expansion": 0,
+      "zones": [
+        "Mid 30 Dungeon"
+      ]
+    },
+    {
+      "regionId": 355,
+      "name": "Region355",
+      "expansion": 0,
+      "zones": [
+        "Hib 45 Dungeon"
+      ]
+    },
+    {
+      "regionId": 356,
+      "name": "Region356",
+      "expansion": 0,
+      "zones": [
+        "Alb 45 Dungeon"
+      ]
+    },
+    {
+      "regionId": 359,
+      "name": "Region359",
+      "expansion": 0,
+      "zones": [
+        "Mid 45 Dungeon"
+      ]
+    }
+  ]
+}

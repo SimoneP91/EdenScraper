@@ -1,0 +1,23 @@
+{
+  "name": "daoc-drop-scraper",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Ricostruzione drop table (mob -> item) per server OpenDaoc Ardred da allakhazam + eden-daoc",
+  "scripts": {
+    "extract": "node scripts/run-pipeline.js --extract",
+    "allakhazam-login": "node scripts/run-pipeline.js --allakhazam-login",
+    "allakhazam": "node scripts/run-pipeline.js --allakhazam",
+    "eden-login": "node scripts/run-pipeline.js --eden-login",
+    "eden": "node scripts/run-pipeline.js --eden",
+    "status": "node scripts/status.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "p-queue": "^8.0.1",
+    "playwright": "^1.48.0",
+    "undici": "^6.19.0"
+  }
+}
