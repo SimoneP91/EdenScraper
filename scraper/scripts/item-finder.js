@@ -18,11 +18,37 @@ import { propName, objectTypeName, REALM } from '../src/05-report/props.js';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DUMP = path.resolve(root, '..', 'sql', 'ardred-db-20260717-222844.sql');
 
+// slot -> Item_Type (mappa reale dal DB)
+const SLOT_FLAGS = {
+  head: [21], chest: [25], legs: [27], arms: [28], hands: [22], boots: [23], cloak: [26],
+  neck: [29], belt: [32], wrist: [33, 34], ring: [35, 36], jewel: [24], mythical: [37],
+  '2h': [12], mainhand: [10], offhand: [11], ranged: [13],
+};
 const args = process.argv.slice(2);
-const listOnly = args.includes('--list');
-const query = args.filter((a) => !a.startsWith('--')).join(' ').trim();
-if (!query) {
-  console.log('Uso: node scripts/item-finder.js "<nome o Id_nb>" [--list]');
+let listOnly = false, minLevel = null, nameArg = null;
+const slots = new Set();
+const slotNames = [];
+const positional = [];
+for (let i = 0; i < args.length; i++) {
+  const a = args[i];
+  const key = a.replace(/^--/, '').toLowerCase();
+  if (a === '--list') listOnly = true;
+  else if (a === '--level') minLevel = parseInt(args[++i], 10);
+  else if (a.startsWith('--level=')) minLevel = parseInt(a.slice(8), 10);
+  else if (a === '--name') nameArg = args[++i];
+  else if (a.startsWith('--name=')) nameArg = a.slice(7);
+  else if (a.startsWith('--') && SLOT_FLAGS[key]) { for (const t of SLOT_FLAGS[key]) slots.add(t); slotNames.push(key); }
+  else if (a.startsWith('--')) console.log(`Flag sconosciuto ignorato: ${a}`);
+  else positional.push(a);
+}
+const query = (nameArg ?? positional.join(' ')).trim();
+if (!query && !slots.size) {
+  console.log('Uso: node scripts/item-finder.js ["<nome o Id_nb>"] [--<slot>] [--level X] [--list]');
+  console.log('  nome/Id_nb : opzionale se usi uno slot');
+  console.log('  --name "x" : alias esplicito del nome');
+  console.log('  --level X  : solo item di livello >= X');
+  console.log('  --list     : solo elenco');
+  console.log('  slot       : ' + Object.keys(SLOT_FLAGS).map((s) => '--' + s).join('  '));
   process.exit(1);
 }
 
@@ -69,18 +95,42 @@ const ITEM_COLS = ['Id_nb', 'Name', 'Level', 'Quality', 'DPS_AF', 'SPD_ABS', 'Ob
 const items = index('itemtemplate', ITEM_COLS);
 const byId = new Map(items.map((i) => [i.Id_nb, i]));
 
-// ricerca
-let matches = items.filter((i) => norm(i.Id_nb) === q || norm(i.Name) === q);
-if (!matches.length) matches = items.filter((i) => norm(i.Name).includes(q) || norm(i.Id_nb).includes(q));
+// ricerca per nome a 3 stadi (se c'è un nome), altrimenti parti da tutti
+let matches;
+if (query) {
+  matches = items.filter((i) => norm(i.Id_nb) === q || norm(i.Name) === q);              // 1. esatto
+  if (!matches.length) matches = items.filter((i) => norm(i.Name).includes(q) || norm(i.Id_nb).includes(q)); // 2. contiguo
+  if (!matches.length) {                                                                  // 3. tutte le parole
+    const terms = query.split(/\s+/).map(norm).filter(Boolean);
+    if (terms.length > 1)
+      matches = items.filter((i) => { const n = norm(i.Name), d = norm(i.Id_nb); return terms.every((t) => n.includes(t) || d.includes(t)); });
+  }
+} else {
+  matches = items.slice();
+}
 
-if (!matches.length) { console.log(`${C.red}Nessun item trovato per "${query}".${C.off}`); process.exit(0); }
+// filtri slot + livello
+if (slots.size) matches = matches.filter((i) => slots.has(+i.Item_Type));
+if (minLevel != null && !Number.isNaN(minLevel)) matches = matches.filter((i) => +i.Level >= minLevel);
+
+const filterDesc = [slotNames.length ? `slot: ${slotNames.join('/')}` : '', minLevel != null ? `livello >= ${minLevel}` : ''].filter(Boolean).join(', ');
+if (!matches.length) {
+  console.log(`${C.red}Nessun item trovato${query ? ` per "${query}"` : ''}${filterDesc ? ` (${filterDesc})` : ''}.${C.off}`);
+  process.exit(0);
+}
+if (filterDesc) console.log(`${C.dim}Filtri attivi: ${filterDesc}${C.off}`);
 
 // elenco match SEMPRE (anche con 1 solo), con il comando GM copia-incolla
-console.log(`\n${C.b}${matches.length} item ${matches.length === 1 ? 'trovato' : 'corrispondono'} per "${query}":${C.off}`);
+const LIST_CAP = 80;
+const forWhat = query ? ` per "${query}"` : '';
+console.log(`\n${C.b}${matches.length} item ${matches.length === 1 ? 'trovato' : 'trovati'}${forWhat}:${C.off}`);
+const shownList = matches.slice(0, LIST_CAP);
 console.log(table(['Name', 'lvl', 'realm', 'comando GM (copia-incolla)'],
-  matches.map((i) => [i.Name, i.Level, REALM[+i.Realm] ?? i.Realm, gmCreate(i.Id_nb)]), 90));
+  shownList.map((i) => [i.Name, i.Level, REALM[+i.Realm] ?? i.Realm, gmCreate(i.Id_nb)]), 90));
+if (matches.length > LIST_CAP)
+  console.log(`\n${C.gold}… e altri ${matches.length - LIST_CAP}.${C.off} ${C.dim}Restringi con un nome o --level.${C.off}`);
 if (listOnly || matches.length > 4) {
-  console.log(`\n${C.dim}Passa un Id_nb esatto per il profilo completo (o riduci i risultati). Con >4 match mostro solo l'elenco.${C.off}`);
+  if (matches.length <= LIST_CAP) console.log(`\n${C.dim}Passa un Id_nb esatto per il profilo completo. Con >4 match mostro solo l'elenco.${C.off}`);
   process.exit(0);
 }
 if (matches.length > 1) console.log(`\n${C.dim}Mostro il profilo di tutti e ${matches.length}.${C.off}`);
