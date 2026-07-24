@@ -29,6 +29,9 @@ if (!query) {
 const norm = (s) => String(s ?? '').toLowerCase().replace(/[^a-z0-9]/g, '');
 const q = norm(query);
 
+// comando GM: /item create <Id_nb>  (Id_nb con spazi -> tra virgolette)
+const gmCreate = (id) => `/item create ${/\s/.test(id) ? `"${id}"` : id}`;
+
 // ---- util: vista a tabella CLI ----
 const C = { dim: '\x1b[2m', b: '\x1b[1m', gold: '\x1b[33m', grn: '\x1b[32m', red: '\x1b[31m', cyan: '\x1b[36m', off: '\x1b[0m' };
 function trunc(s, n) { s = String(s ?? ''); return s.length > n ? s.slice(0, n - 1) + '…' : s; }
@@ -72,15 +75,15 @@ if (!matches.length) matches = items.filter((i) => norm(i.Name).includes(q) || n
 
 if (!matches.length) { console.log(`${C.red}Nessun item trovato per "${query}".${C.off}`); process.exit(0); }
 
-if (matches.length > 1) {
-  console.log(`\n${C.b}${matches.length} item corrispondono a "${query}":${C.off}`);
-  console.log(table(['Name', 'Id_nb', 'lvl', 'realm'], matches.map((i) => [i.Name, i.Id_nb, i.Level, REALM[+i.Realm] ?? i.Realm])));
-  if (listOnly || matches.length > 4) {
-    console.log(`\n${C.dim}Passa un Id_nb esatto per il profilo completo (o riduci i risultati). Con >4 match mostro solo l'elenco.${C.off}`);
-    process.exit(0);
-  }
-  console.log(`\n${C.dim}Mostro il profilo di tutti e ${matches.length}.${C.off}`);
+// elenco match SEMPRE (anche con 1 solo), con il comando GM copia-incolla
+console.log(`\n${C.b}${matches.length} item ${matches.length === 1 ? 'trovato' : 'corrispondono'} per "${query}":${C.off}`);
+console.log(table(['Name', 'lvl', 'realm', 'comando GM (copia-incolla)'],
+  matches.map((i) => [i.Name, i.Level, REALM[+i.Realm] ?? i.Realm, gmCreate(i.Id_nb)]), 90));
+if (listOnly || matches.length > 4) {
+  console.log(`\n${C.dim}Passa un Id_nb esatto per il profilo completo (o riduci i risultati). Con >4 match mostro solo l'elenco.${C.off}`);
+  process.exit(0);
 }
+if (matches.length > 1) console.log(`\n${C.dim}Mostro il profilo di tutti e ${matches.length}.${C.off}`);
 
 // indici delle tabelle collegate (una volta sola)
 const loot = index('loottemplate', ['TemplateName', 'ItemTemplateID', 'Chance', 'Count']);
@@ -108,6 +111,37 @@ function bonuses(it) {
   return out;
 }
 function spellLine(id) { const s = spellById.get(String(id)); return s ? `#${id} ${s.name}${s.desc ? ' — ' + trunc(s.desc, 60) : ''}` : `#${id} (spell non in tabella)`; }
+
+// ---- ramificazione crafting: reagenti e loro provenienza, ad albero ----
+const MAXDEPTH = 5;
+const byNormId = new Map(items.map((i) => [norm(i.Id_nb), i]));
+const cxiByProduct = new Map();
+for (const r of cxi) { const k = norm(r.CraftedItemId_nb); if (!cxiByProduct.has(k)) cxiByProduct.set(k, []); cxiByProduct.get(k).push(r); }
+const recipeOf = (idn) => cxiByProduct.get(idn) ?? [];
+function dropInfo(idn) { let mobs = 0; for (const l of loot) if (norm(l.ItemTemplateID) === idn) mobs += (tplToMobs.get(String(l.TemplateName))?.length || 0); return mobs; }
+const merchCount = (idn) => merch.reduce((n, m) => n + (norm(m.ItemTemplateID) === idn ? 1 : 0), 0);
+function srcTag(idn) {
+  const d = dropInfo(idn), mc = merchCount(idn), rec = recipeOf(idn);
+  const p = [];
+  if (d) p.push(`${C.cyan}drop ${d} mob${C.off}`);
+  if (mc) p.push(`${C.gold}vend. ${mc}${C.off}`);
+  if (rec.length) p.push(`${C.grn}craft ${rec.length} reag${C.off}`);
+  if (!p.length) return byNormId.has(idn) ? `${C.dim}nessuna fonte nota${C.off}` : `${C.dim}materia prima${C.off}`;
+  return p.join(' · ');
+}
+function ramify(idn, depth, seen, prefix) {
+  const rec = recipeOf(idn);
+  rec.forEach((r, i) => {
+    const ingN = norm(r.IngredientId_nb);
+    const last = i === rec.length - 1;
+    const nm = byNormId.get(ingN)?.Name ?? r.IngredientId_nb;
+    console.log(`  ${prefix}${last ? '└─ ' : '├─ '}${C.b}${r.Count}x ${nm}${C.off}   ${srcTag(ingN)}`);
+    if (recipeOf(ingN).length && depth < MAXDEPTH && !seen.has(ingN)) {
+      seen.add(ingN);
+      ramify(ingN, depth + 1, seen, prefix + (last ? '   ' : '│  '));
+    }
+  });
+}
 function rawRefs(idNb) {
   // dove compare 'Id_nb' (tra apici) in tutto il dump -> tabella
   const marks = [...sql.matchAll(/(?:INSERT INTO|CREATE TABLE) `([^`]+)`/g)].map((x) => ({ pos: x.index, tab: x[1] }));
@@ -122,6 +156,7 @@ for (const it of matches) {
   const id = it.Id_nb;
   console.log(`\n${C.b}${C.cyan}${'═'.repeat(64)}${C.off}`);
   console.log(`${C.b}${it.Name}${C.off}  ${C.dim}[${id}]${C.off}`);
+  console.log(`${C.gold}GM:${C.off} ${gmCreate(id)}`);
 
   // --- ITEM ---
   console.log(head('COS’È'));
@@ -160,13 +195,18 @@ for (const it of matches) {
   console.log(head(`USATO COME INGREDIENTE IN (${asIngr.length} ricette)`));
   console.log(table(['ricetta (Id_nb)', 'produce', 'qta'], asIngr));
 
-  // --- PRODOTTO DA RICETTA ---
-  const recipe = crafted.find((c) => String(c.Id_nb) === id);
-  if (recipe) {
-    console.log(head('PRODOTTO DA RICETTA'));
-    console.log(`  ${C.dim}skill:${C.off} ${CRAFT_SKILL[+recipe.CraftingSkillType] ?? recipe.CraftingSkillType}  ${C.dim}livello:${C.off} ${recipe.CraftingLevel}`);
-    const ingr = cxi.filter((r) => String(r.CraftedItemId_nb) === id).map((r) => [r.Count, r.IngredientId_nb, byId.get(r.IngredientId_nb)?.Name ?? (rawHas(r.IngredientId_nb) ? '(case diff)' : '*** MANCANTE ***')]);
-    console.log(table(['qta', 'ingrediente (Id_nb)', 'nome'], ingr));
+  // --- RICETTA E RAMIFICAZIONE ---
+  console.log(head('RICETTA E RAMIFICAZIONE (reagenti → provenienza)'));
+  const myRecipe = recipeOf(norm(id));
+  if (!myRecipe.length) {
+    console.log(`  ${C.dim}Non craftabile: nessuna ricetta produce questo item.${C.off}`);
+  } else {
+    const meta = crafted.find((c) => norm(c.Id_nb) === norm(id))
+      ?? crafted.find((c) => norm(c.Id_nb).replace(/\d+$/, '') === norm(id).replace(/\d+$/, ''));
+    if (meta) console.log(`  ${C.dim}skill:${C.off} ${CRAFT_SKILL[+meta.CraftingSkillType] ?? meta.CraftingSkillType}  ${C.dim}livello:${C.off} ${meta.CraftingLevel}`);
+    console.log(`  ${C.b}${it.Name}${C.off}  ${C.dim}(prodotto)${C.off}`);
+    ramify(norm(id), 1, new Set([norm(id)]), '');
+    console.log(`\n  ${C.dim}Legenda: ${C.cyan}drop N mob${C.off}${C.dim} = droppato · ${C.gold}vend. N${C.off}${C.dim} = venduto da N mercanti · ${C.grn}craft N reag${C.off}${C.dim} = a sua volta craftabile (espanso sopra) · materia prima = non in itemtemplate${C.off}`);
   }
 
   // --- RIFERIMENTI GREZZI ---
