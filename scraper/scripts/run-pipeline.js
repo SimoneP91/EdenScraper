@@ -21,6 +21,7 @@ program
   .option('--sql', 'Fase 5: genera drops.sql (bozza per staging) + drops-report.md')
   .option('--export', 'genera i file di esportazione su disco (JSON/CSV/per-mob)')
   .option('--deliverables', 'genera i file per-tabella (JSON+SQL) + README per il collaboratore')
+  .option('--item-explorer', "genera l'Item Explorer HTML (Artifact) dal dump")
   .option('--dump <path>', 'percorso del dump SQL', process.env.DUMP_PATH ?? defaultDump)
   .option('--allakhazam', 'scrape camelot.allakhazam.com')
   .option('--allakhazam-login', 'login allakhazam (credenziali AK_USER/AK_PASS) e salva la sessione')
@@ -65,6 +66,10 @@ try {
     const { runDeliverables } = await import('../src/06-sql/deliverables.js');
     runDeliverables({ dataDir, extractedDir });
   }
+  if (opts.itemExplorer) {
+    const { runExplorer } = await import('../src/07-explorer/build-explorer.js');
+    runExplorer({ dumpPath: opts.dump, dataDir });
+  }
   if (opts.allakhazamLogin) {
     const { runAllakhazamLogin } = await import('../src/01-scrape-allakhazam/login.js');
     await runAllakhazamLogin({ dataDir });
@@ -96,6 +101,7 @@ try {
     !opts.sql &&
     !opts.export &&
     !opts.deliverables &&
+    !opts.itemExplorer &&
     !opts.allakhazam &&
     !opts.allakhazamLogin &&
     !opts.eden &&
